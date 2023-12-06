@@ -1,0 +1,19 @@
+<app-header></app-header>
+<div class="container overflow-hidden ">
+    <div class="row gx-5">
+      <div *ngFor="let product of products" class="col-sm-4 col-lg-4 col-md-4 mb-4">
+        <div class="card h-100 rounded border custom-border">
+          <img class="card-img-top" style="height: 200px;" [src]="product.productImages.length > 0 ? product.productImages[0].url : ''" [alt]="product.productName + ' Image'">
+          <div class="card-body text-center">
+            <h5 class="card-title mb-2">{{ product.productName }}</h5>
+            <p class="card-text text-left">{{ product.productDetails }}</p>
+            <div class="mt-2">
+              <p><b>Rs.{{ product.productAmount }}</b></p>
+            </div>
+            <a [routerLink]="['/product', product.id]" class="btn btn-warning mt-3">View Details</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
