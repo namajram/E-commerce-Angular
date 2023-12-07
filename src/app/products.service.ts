@@ -20,6 +20,22 @@ export class ProductsService {
     return this.http.get(url);
   }
 
+ 
+    addToCart(cartItem: any): Observable<any> {
+    return this.http.post('http://localhost:3000/cart', cartItem);
+  }
+
+  
+  getCartItems(): Observable<any> {
+    return this.http.get('http://localhost:3000/cart');
+  }
+
+  
+  removeFromCart(cartItemId: number): Observable<any> {
+    const url = `http://localhost:3000/cart/${cartItemId}`;
+    return this.http.delete(url);
+  }
+  
 
   updateProduct(id: number, user: any): Observable<any> {
     const url = `${this.apiUrl}/${id}`;

@@ -14,6 +14,7 @@ export class ProductDetailsComponent {
   productId: number=0;
   selectedProduct: any; 
   selectProductIndex: number = 0; 
+  
   ngOnInit(): void {
    
     this.route.params.subscribe(params => {
@@ -47,7 +48,18 @@ export class ProductDetailsComponent {
   }
 
   addToCart(productId: number): void {
-   
-    console.log(`Adding product with ID: ${productId} to cart`);
+    const cartItem = {
+      product: this.selectedProduct,
+      quantity: 1, 
+    };
+
+    this.productsService.addToCart(cartItem).subscribe(
+      (data) => {
+        console.log(`Product with ID ${productId} added to the cart.`, data);
+      },
+      (error) => {
+        console.error('Error adding product to the cart:', error);
+      }
+    );
   }
 }
