@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ProductsService } from '../products.service';
 import { CommonModule } from '@angular/common';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-product-details',
@@ -9,11 +10,17 @@ import { CommonModule } from '@angular/common';
   styleUrl: './product-details.component.css'
 })
 export class ProductDetailsComponent {
-  constructor(private route: ActivatedRoute,private productsService: ProductsService) { }
+  constructor(private route: ActivatedRoute,private productsService: ProductsService,private toastr: ToastrService) { }
   products: any[] = [];
   productId: number=0;
   selectedProduct: any; 
   selectProductIndex: number = 0; 
+  orderDetails={
+    id:undefined,
+    product:[],
+    total:0  ,
+    createdDate:"",
+  };
   
   ngOnInit(): void {
    
@@ -43,8 +50,26 @@ export class ProductDetailsComponent {
   }
 
   buyProduct(productId: number): void {
-    
-    console.log(`Buying product with ID: ${productId}`);
+    const currentDate = new Date();
+
+    const orderDetails = {
+      product:[this.selectedProduct],
+      total: this.selectedProduct.productAmount,
+      createdDate: currentDate.toISOString() 
+      
+    };
+
+    this.productsService.addToOrder(orderDetails).subscribe(
+      (response) => {
+        this.toastr.success('success',`Product with ID ${this.selectedProduct.id} added to the Order`);
+        console.log('Order placed successfully:', response);
+      
+      },
+      (error) => {
+        this.toastr.error('Error adding product to the Order:"',error)
+        console.error('Error placing order:', error);
+      }
+    );
   }
 
   addToCart(productId: number): void {
@@ -55,9 +80,11 @@ export class ProductDetailsComponent {
 
     this.productsService.addToCart(cartItem).subscribe(
       (data) => {
+        this.toastr.success('success',`Product with ID ${this.selectedProduct.id} added to the cart`);
         console.log(`Product with ID ${productId} added to the cart.`, data);
       },
       (error) => {
+        this.toastr.error('Error adding product to the cart:"',error)
         console.error('Error adding product to the cart:', error);
       }
     );

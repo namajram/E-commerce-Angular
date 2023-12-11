@@ -35,6 +35,13 @@ export class ProductsService {
     const url = `http://localhost:3000/cart/${cartItemId}`;
     return this.http.delete(url);
   }
+  addToOrder(order: any): Observable<any> {
+    return this.http.post('http://localhost:3000/order', order);
+  }
+  getOrder(): Observable<any> {
+    return this.http.get('http://localhost:3000/order');
+  }
+
   
 
   updateProduct(id: number, user: any): Observable<any> {

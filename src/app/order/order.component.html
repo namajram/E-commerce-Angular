@@ -1,0 +1,24 @@
+<app-header></app-header>
+<div class="container mt-5">
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Order Id</th>
+        <th scope="col">Product Name</th>
+        <th scope="col">Total Price</th>
+        <!-- <th scope="col">Action</th> -->
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let order of orderDetails">
+        <td>{{ order.id }}</td>
+        <td>
+          <div *ngFor="let product of order.product">
+            {{ product.productName }}
+          </div>
+        </td>
+        <td>{{ order.total }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
